@@ -48,7 +48,7 @@ class LogInView(TemplateView):
                 password=password
                 )
             login(request, user)
-            return redirect('sender:index')
+            return redirect()
         context = {
             'form': form,
         }
