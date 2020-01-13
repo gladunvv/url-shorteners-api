@@ -26,7 +26,6 @@ class Question(models.Model):
 
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     text = models.TextField()
-    success_mark = models.BooleanField(default=False)
 
     class Meta:
 
@@ -35,3 +34,17 @@ class Question(models.Model):
 
     def __str__(self):
         return f'Question: {self.text}'
+
+class Answer(models.Model):
+
+    question = models.ForeignKey(Question, on_delete=modles.CASCADE)
+    variant = models.CharField()
+    correct = models.BooleanField(default=False)
+
+    class Meta:
+
+        verbose_name = 'Answer'
+        verbose_name_plural = 'Answers'
+
+    def __str__(self):
+        return f'Answer: {self.variant}'
