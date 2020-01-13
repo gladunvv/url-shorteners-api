@@ -39,8 +39,8 @@ class Question(models.Model):
 
 class Answer(models.Model):
 
-    question = models.ForeignKey(Question, on_delete=modles.CASCADE)
-    variant = models.CharField()
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    variant = models.CharField(max_length=200)
     correct = models.BooleanField(default=False)
 
     class Meta:
