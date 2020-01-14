@@ -1,1 +1,1 @@
-# url-shorteners-api
+# app-quiz-django
