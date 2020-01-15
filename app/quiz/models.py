@@ -14,7 +14,7 @@ class Quiz(models.Model):
         MinValueValidator(0),
         MaxValueValidator(100)
         ])
-    
+
     class Meta:
 
         verbose_name = 'Quiz'
@@ -36,6 +36,7 @@ class Question(models.Model):
 
     def __str__(self):
         return f'Question: {self.text}'
+
 
 class Answer(models.Model):
 
