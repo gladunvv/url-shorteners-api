@@ -26,7 +26,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
 
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, related_name='questions',on_delete=models.CASCADE)
     text = models.TextField()
 
     class Meta:
@@ -40,7 +40,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
 
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
     variant = models.CharField(max_length=200)
     correct = models.BooleanField(default=False)
 

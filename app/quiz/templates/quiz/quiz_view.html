@@ -1,3 +1,3 @@
 {% for q in quiz %}
-{{q}}
+<a href="{% url 'quiz:question' q.title %}">{{q}}</a>
 {% endfor %}
