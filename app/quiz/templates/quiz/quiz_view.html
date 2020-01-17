@@ -1,3 +1,6 @@
+<h1>Quizzes:</h1>
 {% for q in quiz %}
-<a href="{% url 'quiz:question' q.title %}">{{q}}</a>
+<li>
+    <a href="{% url 'quiz:questions_list' q.title %}">{{q.title}}</a>
+</li>
 {% endfor %}

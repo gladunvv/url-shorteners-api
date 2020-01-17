@@ -1,10 +1,11 @@
 from django.urls import path
-from quiz.views import QuizView, QuestionView
+from quiz.views import QuizzesListView, QuestionsListView, QuestionView
 
 
 app_name = 'quiz'
 
 urlpatterns = [
-    path('', QuizView.as_view(), name='quiz_list'),
-    path('<str:title>', QuestionView.as_view(), name='question')
+    path('', QuizzesListView.as_view(), name='quizzes_list'),
+    path('<str:title>', QuestionsListView.as_view(), name='questions_list'),
+    path('<str:title>/<int:pk>', QuestionView.as_view(), name='question')
 ]

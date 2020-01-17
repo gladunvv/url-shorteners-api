@@ -3,7 +3,7 @@ from django.shortcuts import render
 from quiz.models import Quiz, Question, Answer
 
 
-class QuizView(TemplateView):
+class QuizzesListView(TemplateView):
 
     template_name = 'quiz/quiz_view.html'
 
@@ -15,9 +15,9 @@ class QuizView(TemplateView):
         return render(request, self.template_name, context)
 
 
-class QuestionView(TemplateView):
+class QuestionsListView(TemplateView):
 
-    template_name = 'quiz/question_view.html'
+    template_name = 'quiz/questions_list_view.html'
 
     def get(self, request, *args, **kwargs):
         quiz = Quiz.objects.get(title=kwargs['title'])
@@ -25,5 +25,20 @@ class QuestionView(TemplateView):
         context = {
             'quiz': quiz,
             'questions': questions
+        }
+        return render(request, self.template_name, context)
+
+
+class QuestionView(TemplateView):
+
+    template_name = 'quiz/question_view.html'
+
+    def get(self, request, *args, **kwargs):
+        quiz = Quiz.objects.get(title=kwargs['title'])
+        question = Question.objects.get(pk=kwargs['pk'])
+        answers = question.answers.all()
+        context = {
+            'question': question,
+            'answers': answers
         }
         return render(request, self.template_name, context)
