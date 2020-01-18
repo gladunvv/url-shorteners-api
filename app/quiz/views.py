@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from quiz.models import Quiz, Question, Answer
 
 
@@ -42,3 +42,9 @@ class QuestionView(TemplateView):
             'answers': answers
         }
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        answer = request.POST.get('answer')
+        print(answer)
+        return render(request, self.template_name   )

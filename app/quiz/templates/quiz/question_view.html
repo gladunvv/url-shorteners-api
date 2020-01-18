@@ -1,8 +1,11 @@
 <h1>{{question.text}}</h1>
 
-{% for answer in answers %}
-<li>
-    {{ answer.variant }}
-</li>
-
-{% endfor %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <select name="answer">
+    {% for answer in answers %}
+      <option value="{{ answer.variant }}">{{ answer }}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="Next">
+  </form>
