@@ -2,6 +2,12 @@
 <h1>{{quiz.title}}:</h1>
 {% for question in questions %}
 <li>
-    <a href="{% url 'quiz:question' quiz.title question.pk %}">{{question.text}}</a>
+    {{ question.text }}
 </li>
 {% endfor %}
+<a href="{% url 'quiz:question' quiz.title questions.first.pk %}">
+<button>
+    START QUIZ
+</button>
+</a>
+
