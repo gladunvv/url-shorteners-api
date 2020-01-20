@@ -4,16 +4,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Quiz(models.Model):
 
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=60)
     description = models.TextField()
     success_text = models.TextField(blank=True)
+    normal_text = models.TextField(blank=True)
     fail_text = models.TextField(blank=True)
-    pass_mark = models.SmallIntegerField(
-        validators=[
-        MinValueValidator(0),
-        MaxValueValidator(100)
-        ])
 
     class Meta:
 
@@ -27,6 +23,7 @@ class Quiz(models.Model):
 class Question(models.Model):
 
     quiz = models.ForeignKey(Quiz, related_name='questions',on_delete=models.CASCADE)
+    user_variant = models.CharField(max_length=200, blank=True)
     text = models.TextField()
 
     class Meta:
