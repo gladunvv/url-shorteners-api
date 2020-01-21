@@ -23,7 +23,6 @@ class Quiz(models.Model):
 class Question(models.Model):
 
     quiz = models.ForeignKey(Quiz, related_name='questions',on_delete=models.CASCADE)
-    user_variant = models.CharField(max_length=200, blank=True)
     text = models.TextField()
 
     class Meta:
@@ -48,3 +47,18 @@ class Answer(models.Model):
 
     def __str__(self):
         return f'Answer: {self.variant}'
+
+
+class UserAnswer(models.Model):
+    
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+
+        verbose_name = 'User Answer'
+        verbose_name_plural = 'User Answers'
+
+    def __str__(self):
+        return f'User Answer on {question}: {answer}'
