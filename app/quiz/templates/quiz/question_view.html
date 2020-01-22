@@ -2,6 +2,10 @@
 <h1>{{question.text}}</h1>
 <form action="" method="POST">
   {% csrf_token %}
+  {% if user_answer %}
+  User answer:
+    {{ user_answer.answer }}
+  {% else %}
   <select name="answer">
     {% for answer in question.answers.all %}
     <option value="{{ answer.variant }}">{{ answer }}</option>
@@ -9,6 +13,7 @@
   </select>
   <input type="submit" value="Next">
 </form>
+{% endif %}
 
 
 {% endfor %}

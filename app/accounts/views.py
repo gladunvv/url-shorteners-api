@@ -48,7 +48,7 @@ class LogInView(TemplateView):
                 password=password
                 )
             login(request, user)
-            return redirect()
+            return redirect('quiz:quizzes_list')
         context = {
             'form': form,
         }

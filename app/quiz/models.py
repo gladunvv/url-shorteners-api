@@ -61,4 +61,4 @@ class UserAnswer(models.Model):
         verbose_name_plural = 'User Answers'
 
     def __str__(self):
-        return f'User Answer on {question}: {answer}'
+        return f'User Answer on {self.question}: {self.answer}'

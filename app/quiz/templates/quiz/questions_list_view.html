@@ -5,9 +5,9 @@
     {{ question.text }}
 </li>
 {% endfor %}
-<a href="{% url 'quiz:question' quiz.title questions.first.pk %}">
-<button>
-    START QUIZ
-</button>
-</a>
-
+<form action="" method="POST">
+    {% csrf_token %}
+    <button type="submit">
+        START QUIZ
+    </button>
+</form>
