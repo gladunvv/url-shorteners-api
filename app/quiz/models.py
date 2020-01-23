@@ -1,15 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator, MaxValueValidator
+
+User = get_user_model()
+
 
 class Quiz(models.Model):
 
-    user = models.ForeignKey(get_user_model(), blank=True, on_delete=models.CASCADE)
-    title = models.CharField(max_length=60)
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    success_text = models.TextField(blank=True)
-    normal_text = models.TextField(blank=True)
-    fail_text = models.TextField(blank=True)
 
     class Meta:
 
@@ -23,7 +22,7 @@ class Quiz(models.Model):
 class Question(models.Model):
 
     quiz = models.ForeignKey(Quiz, related_name='questions',on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.CharField(max_length=255)
 
     class Meta:
 
@@ -37,8 +36,8 @@ class Question(models.Model):
 class Answer(models.Model):
 
     question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
-    variant = models.CharField(max_length=200)
-    correct = models.BooleanField(default=False)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
 
     class Meta:
 
@@ -46,13 +45,12 @@ class Answer(models.Model):
         verbose_name_plural = 'Answers'
 
     def __str__(self):
-        return f'Answer: {self.variant}'
+        return f'Answer: {self.text}'
 
 
 class UserAnswer(models.Model):
     
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='user_answer', on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
     class Meta:
@@ -61,4 +59,4 @@ class UserAnswer(models.Model):
         verbose_name_plural = 'User Answers'
 
     def __str__(self):
-        return f'User Answer on {self.question}: {self.answer}'
+        return f'User Answer on question: {self.answer}'

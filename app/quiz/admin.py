@@ -14,7 +14,7 @@ class EmailAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class EmailAdmin(admin.ModelAdmin):
-    list_display = ('variant', 'correct')
+    list_display = ('text', 'is_correct')
 
 @admin.register(UserAnswer)
 class UserAnswerAdmin(admin.ModelAdmin):
