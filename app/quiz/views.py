@@ -4,6 +4,11 @@ from django.shortcuts import render, redirect
 from quiz.models import Quiz, Question, Answer, UserAnswer
 
 
+class IndexView(TemplateView):
+
+    template_name = 'quiz/index.html'
+
+
 class QuizzesListView(TemplateView):
 
     template_name = 'quiz/quiz_view.html'
