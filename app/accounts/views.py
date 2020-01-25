@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
+
+from accounts.forms import UserCreationFormCustom
 
 
 class SignUpView(TemplateView):
@@ -9,14 +11,14 @@ class SignUpView(TemplateView):
     template_name = 'accounts/signup.html'
 
     def get(self, request, *args, **kwargs):
-        form = UserCreationForm()
+        form = UserCreationFormCustom()
         context = {
             'form': form,
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = UserCreationForm(request.POST)
+        form = UserCreationFormCustom(request.POST)
         if form.is_valid():
             form.save()
             return redirect('accounts:login')
@@ -48,7 +50,7 @@ class LogInView(TemplateView):
                 password=password
                 )
             login(request, user)
-            return redirect('quiz:quizzes_list')
+            return redirect('quiz:index')
         context = {
             'form': form,
         }
