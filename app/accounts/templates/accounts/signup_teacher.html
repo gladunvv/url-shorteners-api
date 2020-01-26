@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<h1>Регистрация</h1>
+<h2>Роль учителя</h2>
+Регитрация аккаунта в роли учителя даёт вам возможность создавать викторины, если хотите проходить викторины созданные другими
+пользователями вам необходимо зарегестрироваться в роли студента
+<a href="{% url 'accounts:signup_student' %}">
+    <button>
+        Регистрация в роли студента
+    </button>
+</a>
+
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    </p>
+    {% endfor %}
+    <button type="submit">Регистрация</button>
+</form>
+
+<small>
+    У вас уже есть аккаунт? <a href="{% url "accounts:login" %}">Войти</a>
+</small>
+
+{% endblock %}
+
+
+

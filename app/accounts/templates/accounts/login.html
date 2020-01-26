@@ -1,9 +1,9 @@
  {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
-<h1>LOGIN</h1>
+<h1>ВХОД</h1>
 <form method="POST">
     {% csrf_token %}
 
@@ -20,10 +20,11 @@
     </p>
     {% endfor %}
 
-    <button type="submit">Login</button>
+    <button type="submit">Войти</button>
 </form>
 
 <small>
-    You don't have an account?  <a href="{% url "accounts:signup" %}">Signup</a>
+    Вернуться на <a href="{% url 'quiz:index' %}">Главную страницу</a>
 </small>
+
 {% endblock %}

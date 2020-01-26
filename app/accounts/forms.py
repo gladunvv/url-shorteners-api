@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from accounts.models import User
+from quiz.models import Student, Teacher
 
 class StudentCreationForm(UserCreationForm):
     
