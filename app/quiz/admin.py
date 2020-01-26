@@ -1,5 +1,5 @@
 from django.contrib import admin
-from quiz.models import Quiz, Question, Answer, UserAnswer
+from quiz.models import Quiz, Question, Answer, StudentAnswer
 
 
 @admin.register(Quiz)
@@ -16,6 +16,6 @@ class EmailAdmin(admin.ModelAdmin):
 class EmailAdmin(admin.ModelAdmin):
     list_display = ('text', 'is_correct')
 
-@admin.register(UserAnswer)
-class UserAnswerAdmin(admin.ModelAdmin):
+@admin.register(StudentAnswer)
+class StudentAnswerAdmin(admin.ModelAdmin):
     list_display = ('user', 'answer')

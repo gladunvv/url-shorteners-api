@@ -1,6 +1,10 @@
 <h1>Список викторин:</h1>
+{% if quizzes %}
 {% for quiz in quizzes %}
 <li>
     <a href="{% url 'quiz:quiz_detail' quiz.title %}">{{quiz.title}}</a>
 </li>
 {% endfor %}
+{% else %}
+<h1>Извиняемся пока нет викторин</h1>
+{% endif %}

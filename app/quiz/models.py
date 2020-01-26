@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from accounts.models import User
 
 
 class Quiz(models.Model):
@@ -48,9 +46,50 @@ class Answer(models.Model):
         return f'Answer: {self.text}'
 
 
-class UserAnswer(models.Model):
+class Teacher(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, blank=True, related_name='quizzes', on_delete=models.CASCADE)
     
-    user = models.ForeignKey(User, related_name='user_answer', on_delete=models.CASCADE)
+    class Meta:
+
+        verbose_name = 'Teacher'
+        verbose_name_plural = 'Teachers'
+
+        def __str__(self):
+            return f'Teacher: {self.user.username}'
+
+
+class Student(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
+
+    class Meta:
+
+        verbose_name = 'Student'
+        verbose_name_plural = 'Students'
+
+    def __str__(self):
+        return f'Student: {self.user.username}'
+
+
+class TakenQuiz(models.Model):
+    student = models.ForeignKey(Student, related_name='taken_quizzes', on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, related_name='taken_quizzes', on_delete=models.CASCADE)
+    score = models.FloatField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+
+        verbose_name = 'Taken Quiz'
+        verbose_name_plural = 'Taken Quizzes'
+
+    def __str__(self):
+        return f'Taken Quiz: {self.quiz}'
+
+
+class StudentAnswer(models.Model):
+    
+    user = models.ForeignKey(Student, related_name='user_answer', on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
     class Meta:
@@ -59,4 +98,4 @@ class UserAnswer(models.Model):
         verbose_name_plural = 'User Answers'
 
     def __str__(self):
-        return f'User Answer on question: {self.answer}'
+        return f'{self.answer}'
