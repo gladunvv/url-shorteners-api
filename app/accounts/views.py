@@ -3,42 +3,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import AuthenticationForm
 
-from accounts.forms import TeacherCreationForm, StudentCreationForm
+from accounts.forms import MyUserCreationForm
 
-class StudentSignUpView(TemplateView):
+class UserSignUpView(TemplateView):
 
-    template_name = 'accounts/signup_student.html'
+    template_name = 'accounts/signup.html'
 
     def get(self, request, *args, **kwargs):
-        form = StudentCreationForm()
+        form = MyUserCreationForm()
         context = {
             'form': form,
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = StudentCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:login')
-        context = {
-            'form': form,
-        }
-        return render(request, self.template_name, context)
-
-class TeacherSignUpView(TemplateView):
-
-    template_name = 'accounts/signup_teacher.html'
-
-    def get(self, request, *args, **kwargs):
-        form = TeacherCreationForm()
-        context = {
-            'form': form,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = TeacherCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('accounts:login')
