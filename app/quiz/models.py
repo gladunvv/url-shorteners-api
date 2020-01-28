@@ -2,9 +2,23 @@ from django.db import models
 from accounts.models import User
 
 
+
+class Teacher(models.Model):
+
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+ 
+    class Meta:
+
+        verbose_name = 'Teacher'
+        verbose_name_plural = 'Teachers'
+
+        def __str__(self):
+            return f'Teacher: {self.user.username}'
+
+
 class Quiz(models.Model):
 
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, related_name='quizzes', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -46,20 +60,8 @@ class Answer(models.Model):
         return f'Answer: {self.text}'
 
 
-class Teacher(models.Model):
-    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, blank=True, related_name='quizzes', on_delete=models.CASCADE)
-    
-    class Meta:
-
-        verbose_name = 'Teacher'
-        verbose_name_plural = 'Teachers'
-
-        def __str__(self):
-            return f'Teacher: {self.user.username}'
-
-
 class Student(models.Model):
+
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
 
@@ -73,6 +75,7 @@ class Student(models.Model):
 
 
 class TakenQuiz(models.Model):
+
     student = models.ForeignKey(Student, related_name='taken_quizzes', on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, related_name='taken_quizzes', on_delete=models.CASCADE)
     score = models.FloatField()

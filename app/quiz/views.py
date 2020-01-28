@@ -9,6 +9,16 @@ class IndexView(TemplateView):
     template_name = 'quiz/index.html'
 
 
+class StudentClassView(TemplateView):
+
+    template_name = 'quiz/student_class.html'
+
+
+class TeacherCabinetView(TemplateView):
+
+    template_name = 'quiz/teacher_cabinet.html'
+
+
 class QuizzesListView(TemplateView):
 
     template_name = 'quiz/quiz_view.html'

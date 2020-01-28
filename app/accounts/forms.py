@@ -12,7 +12,7 @@ class MyUserCreationForm(UserCreationForm):
         model = User
 
     def clean(self):
-        cleaned_data = super(StudentCreationForm, self).clean()
+        cleaned_data = super(MyUserCreationForm, self).clean()
         is_student = cleaned_data.get("is_student")
         is_teacher = cleaned_data.get("is_teacher")
         if is_teacher and is_student:

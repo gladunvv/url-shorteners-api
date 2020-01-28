@@ -49,7 +49,10 @@ class LogInView(TemplateView):
                 password=password
                 )
             login(request, user)
-            return redirect('quiz:index')
+            if user.is_teacher:
+                return redirect('quiz:teacher_cabinet')
+            elif user.is_student:
+                return redirect('quiz:student_class')
         context = {
             'form': form,
         }
