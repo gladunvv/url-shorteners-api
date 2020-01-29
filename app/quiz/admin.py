@@ -1,5 +1,5 @@
 from django.contrib import admin
-from quiz.models import Quiz, Question, Answer, StudentAnswer
+from quiz.models import Quiz, Question, Answer, StudentAnswer, Teacher, TakenQuiz, Student
 
 
 @admin.register(Quiz)
@@ -19,3 +19,18 @@ class EmailAdmin(admin.ModelAdmin):
 @admin.register(StudentAnswer)
 class StudentAnswerAdmin(admin.ModelAdmin):
     list_display = ('user', 'answer')
+
+
+@admin.register(Teacher)
+class EmailAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Student)
+class EmailAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TakenQuiz)
+class StudentAnswerAdmin(admin.ModelAdmin):
+    pass
