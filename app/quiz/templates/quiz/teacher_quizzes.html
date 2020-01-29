@@ -1,0 +1,8 @@
+{% for quiz in quizzes %}
+    <p>
+        {{ quiz }}
+        {{ quiz.questions_count }}
+    </p>
+{% endfor %}
+
+<a href="{% url 'quiz:create_quiz' %}">Добавить викторину</a>

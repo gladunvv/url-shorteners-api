@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from accounts.forms import MyUserCreationForm
 
+
 class UserSignUpView(TemplateView):
 
     template_name = 'accounts/signup.html'
