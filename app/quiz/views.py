@@ -33,7 +33,6 @@ class CreateQuizView(CreateView):
         quiz = form.save(commit=False)
         quiz.teacher = self.request.user.teacher
         quiz.save()
-        messages.success(self.request, 'The quiz was created with success! Go ahead and add some questions now.')
         return redirect('quiz:add_questions', pk=quiz.id)
 
 
@@ -88,7 +87,7 @@ class AddAnswersView(CreateView):
         with transaction.atomic():
             form.save()
             formset.save()
-        return redirect('quiz:teacher_quizzes')
+        return redirect('quiz:quiz_detail', pk=self.quiz.id)
 
 
 class TeacherQuizzesView(ListView):

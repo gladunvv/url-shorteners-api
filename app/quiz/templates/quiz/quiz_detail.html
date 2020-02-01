@@ -9,3 +9,5 @@
         {{question.text}} <a href="{% url 'quiz:add_answers' quiz.pk question.pk %}">Изменить</a>
     </div>
 {% endfor %}
+
+<a href="{% url 'quiz:add_question' quiz.id %}">Добавить вопрос</a>

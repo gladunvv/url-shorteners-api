@@ -1,5 +1,5 @@
 
-Викторина: <a href="{% url 'quiz:quiz_detail' quiz.pk %}">{{ quiz.title }}</a> <br>
+Викторина: <a href="{% url 'quiz:quiz_detail' quiz.id %}">{{ quiz.title }}</a> <br>
 Вопрос: {{ question.text }}
 
 <h2>{{ question.text }}</h2><br>
@@ -21,24 +21,23 @@
                         <th>{{ field.label|capfirst }}</th>
                     {% endfor %}
                 </tr>
-                </thead>
+            </thead>
             {% endif %}
             <tr>
                 {% for field in form.visible_fields %}
-                    <td>
-                        {# Include the hidden fields in the form #}
-                        {% if forloop.first %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                        {% endif %}
-                        {{ field.errors.as_ul }}
-                        {{ field }}
-                    </td>
+                <td>
+                    {# Include the hidden fields in the form #}
+                    {% if forloop.first %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
                 {% endfor %}
             </tr>
-        {% endfor %}
-    </table>
-    <input type="submit" value="Save"/> 
-    <a href="{% url 'quiz:teacher_cabinet' %}">Кабинет</a>
+            {% endfor %}
+        </table>
+    <input type="submit" value="Сохранить"/> 
 </form>
