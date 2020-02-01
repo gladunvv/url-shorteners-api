@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.db import transaction
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, View
-from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.detail import DetailView
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from quiz.models import Quiz, Question, Answer, StudentAnswer
 from quiz.forms import QuestionForm, AnswerFormSet
 
@@ -103,26 +104,18 @@ class TeacherQuizzesView(ListView):
 
 
 
-class QuizzesListView(TemplateView):
+class QuizzesListView(ListView):
 
+    model = Quiz
     template_name = 'quiz/quiz_view.html'
 
-    def get(self, request, *args, **qwargs):
-        quizzes = Quiz.objects.all()
-        context = {
-            'quizzes': quizzes
-        }
-        return render(request, self.template_name, context)
 
+class QuizDetailView(DetailView):
 
-class QuizDetailView(TemplateView):
-
+    model = Quiz
     template_name = 'quiz/quiz_detail.html'
 
-    def get(self, request, *args, **kwargs):
-        quiz = get_object_or_404(Quiz, title=kwargs['title'])
-        context = {
-            'quiz': quiz
-        }
-        return render(request, self.template_name, context)
-
+    def get_context_data(self, **kwargs):
+        context = super(QuizDetailView, self).get_context_data(**kwargs)
+        context['questions'] = Question.objects.filter(quiz=context['quiz'])
+        return context

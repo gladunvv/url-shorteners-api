@@ -1,11 +1,11 @@
 
-<h1>Quiz: {{quiz.title}}</h1>
+<h1>Quiz: {{ quiz.title }}</h1>
 <span>Description:</span>
-<p>{{quiz.description}}</p>
-<span>Кол-во вопросов : {{quiz.questions.count}} </span>
-<form action="" method="POST">
-    {% csrf_token %}
-    <button type="submit">
-        Начать викторину
-    </button>
-</form>
+<p>{{ quiz.description }}</p>
+<span>Кол-во вопросов : {{ quiz.questions.count }} </span>
+
+{% for question in questions %}
+    <div>
+        {{question.text}} <a href="{% url 'quiz:add_answers' quiz.pk question.pk %}">Изменить</a>
+    </div>
+{% endfor %}

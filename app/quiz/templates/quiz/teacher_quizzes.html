@@ -2,6 +2,7 @@
     <p>
         {{ quiz }}
         {{ quiz.questions_count }}
+        <a href="{% url 'quiz:quiz_detail' quiz.pk %}">Подробнее</a>
     </p>
 {% endfor %}
 

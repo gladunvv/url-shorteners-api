@@ -1,5 +1,5 @@
 
-Викторина: <a href="{% url 'quiz:quiz_detail' quiz.title %}">{{ quiz.title }}</a> <br>
+Викторина: <a href="{% url 'quiz:quiz_detail' quiz.pk %}">{{ quiz.title }}</a> <br>
 Вопрос: {{ question.text }}
 
 <h2>{{ question.text }}</h2><br>

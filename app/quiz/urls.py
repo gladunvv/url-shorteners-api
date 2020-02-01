@@ -23,5 +23,5 @@ urlpatterns = [
     path('<int:quiz_pk>/<int:question_pk>/add_answers', AddAnswersView.as_view(), name='add_answers'),
     path('student/', StudentClassView.as_view(), name='student_class'),
     path('list/', QuizzesListView.as_view(), name='quizzes_list'),
-    path('<str:title>', QuizDetailView.as_view(), name='quiz_detail'),
+    path('<int:pk>', QuizDetailView.as_view(), name='quiz_detail'),
 ]
