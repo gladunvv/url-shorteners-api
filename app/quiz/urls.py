@@ -5,7 +5,7 @@ from quiz.views import (
     QuizzesListView,
     QuizDetailView,
     IndexView,
-    TeacherQuizzesView,
+    # TeacherQuizzesView,
     CreateQuizView,
     AddQuestionsView,
     AddAnswersView
@@ -14,10 +14,11 @@ from quiz.views import (
 
 app_name = 'quiz'
 
+
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('teacher/', TeacherCabinetView.as_view(), name='teacher_cabinet'),
-    path('teacher/quizzes', TeacherQuizzesView.as_view(), name='teacher_quizzes'),
+    # path('teacher/quizzes', TeacherQuizzesView.as_view(), name='teacher_quizzes'),
     path('create_quiz', CreateQuizView.as_view(), name='create_quiz'),
     path('<int:pk>/add_questions', AddQuestionsView.as_view(), name='add_question'),
     path('<int:quiz_pk>/<int:question_pk>/add_answers', AddAnswersView.as_view(), name='add_answers'),

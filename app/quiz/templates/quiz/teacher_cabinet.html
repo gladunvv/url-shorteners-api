@@ -1,4 +1,14 @@
 <h1>Hello Teacher Cabinet</h1>
 {{request.user.username}}
 
-<a href="{% url 'quiz:teacher_quizzes' %}">Список Викторин</a>
+{% for quiz in quizzes %}
+    <div>
+        {{ quiz.title }}
+        {{ quiz.description }}
+        {{ quiz.questions_count }}
+        <a href="{% url 'quiz:quiz_detail' quiz.pk %}">Подробнее</a>
+    </div>
+    <br>
+{% endfor %}
+
+<a href="{% url 'quiz:create_quiz' %}">Добавить викторину</a>

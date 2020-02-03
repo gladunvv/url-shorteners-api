@@ -19,10 +19,6 @@ class StudentClassView(TemplateView):
     template_name = 'quiz/student_class.html'
 
 
-class TeacherCabinetView(TemplateView):
-
-    template_name = 'quiz/teacher_cabinet.html'
-
 class CreateQuizView(CreateView):
 
     model = Quiz
@@ -33,7 +29,7 @@ class CreateQuizView(CreateView):
         quiz = form.save(commit=False)
         quiz.teacher = self.request.user.teacher
         quiz.save()
-        return redirect('quiz:add_questions', pk=quiz.id)
+        return redirect('quiz:add_question', pk=quiz.id)
 
 
 
@@ -90,12 +86,12 @@ class AddAnswersView(CreateView):
         return redirect('quiz:quiz_detail', pk=self.quiz.id)
 
 
-class TeacherQuizzesView(ListView):
+class TeacherCabinetView(ListView):
 
     model = Quiz
     ordering = ('name', )
     context_object_name = 'quizzes'
-    template_name = 'quiz/teacher_quizzes.html'
+    template_name = 'quiz/teacher_cabinet.html'
 
     def get_queryset(self):
         queryset = self.request.user.teacher.quizzes.annotate(questions_count=Count('questions', distinct=True))
