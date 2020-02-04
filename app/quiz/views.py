@@ -6,8 +6,8 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from quiz.models import Quiz, Question, Answer, StudentAnswer
 from quiz.forms import QuestionForm, AnswerFormSet
-
 from django.db.models import Count
+
 
 class IndexView(TemplateView):
 
@@ -30,7 +30,6 @@ class CreateQuizView(CreateView):
         quiz.teacher = self.request.user.teacher
         quiz.save()
         return redirect('quiz:add_question', pk=quiz.id)
-
 
 
 class AddQuestionsView(CreateView):
@@ -96,7 +95,6 @@ class TeacherCabinetView(ListView):
     def get_queryset(self):
         queryset = self.request.user.teacher.quizzes.annotate(questions_count=Count('questions', distinct=True))
         return queryset
-
 
 
 class QuizzesListView(ListView):
