@@ -3,33 +3,29 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<h1>Регистрация</h1>
 
-Регитрация аккаунта в роли cтудента даёт вам возможность проходить викторины созданные другими
-пользователями<br>
-Eсли хотите создавать викторины вам необходимо зарегестрироваться в роли учителя
+<div class="section_form">
 
+    <h1>Регистрация</h1>
 
-<form method="POST">
-    {% csrf_token %}
-
-
- 
-    {% for field in form %}
-    <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-    {% endfor %}
-    </p>
-    {% endfor %}
-
-    <button type="submit">Регистрация</button>
-</form>
-
-<small>
-    У вас уже есть аккаунт? <a href="{% url "accounts:login" %}">Войти</a>
-</small>
-
-{% endblock %}
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">Регистрация</button>
+    </form>
+</div>
+    
+    <small>
+        У вас уже есть аккаунт? <a href="{% url "accounts:login" %}">Войти</a>
+    </small>
+    
+    {% endblock %}
+    

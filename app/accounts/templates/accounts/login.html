@@ -3,31 +3,32 @@
 {% block title %}ВХОД{% endblock %}
 
 {% block content %}
+<div class="section_form">
 
-<form class="login" method="POST">
-    <div class="login__border">
-        <h1>ВХОД</h1>
-        {% csrf_token %}
-    
-        {% for field in form %}
-        <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-    
-            {% for error in field.errors %}
-            <p style="color: red">
-                {{ error }}
+    <h1 class="title">ВХОД</h1>
+    <form class="form" method="POST">
+        <div>
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                
+                {% for error in field.errors %}
+                <p style="color: red">
+                    {{ error }}
+                </p>
+                {% endfor %}
             </p>
             {% endfor %}
-        </p>
-        {% endfor %}
-    
-        <button type="submit">Войти</button>
-    </form>
+            
+            <button type="submit">Войти</button>
+        </form>
     </div>
-
-<small>
-    Вернуться на <a href="{% url 'quiz:index' %}">Главную страницу</a>
-</small>
-
+    
+</div>
+        <small>
+            Вернуться на <a href="{% url 'quiz:index' %}">Главную страницу</a>
+        </small>  
 {% endblock %}

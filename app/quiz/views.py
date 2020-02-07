@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, View
 from django.views.generic.detail import DetailView
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
-from quiz.models import Quiz, Question, Answer, StudentAnswer
+from quiz.models import Quiz, Question, Answer, StudentAnswer, TakenQuiz
 from quiz.forms import QuestionForm, AnswerFormSet
 from django.db.models import Count
 
@@ -97,12 +97,6 @@ class TeacherCabinetView(ListView):
         return queryset
 
 
-class QuizzesListView(ListView):
-
-    model = Quiz
-    template_name = 'quiz/quiz_view.html'
-
-
 class QuizDetailView(DetailView):
 
     model = Quiz
@@ -112,3 +106,34 @@ class QuizDetailView(DetailView):
         context = super(QuizDetailView, self).get_context_data(**kwargs)
         context['questions'] = Question.objects.filter(quiz=context['quiz'])
         return context
+
+
+class QuizListView(ListView):
+
+    model = Quiz
+    ordering = ('name', )
+    context_object_name = 'quizzes'
+    template_name = 'quiz/quiz_view.html'
+
+    def get_queryset(self):
+        student = self.request.user.student
+        taken_quizzes = student.quizzes.values_list('pk', flat=True)
+        queryset = Quiz.objects.all() \
+            .exclude(pk__in=taken_quizzes) \
+            .annotate(questions_count=Count('questions')) \
+            .filter(questions_count__gt=0)
+        return queryset
+
+
+class TakenQuizListView(ListView):
+
+    model = TakenQuiz
+    context_object_name = 'taken_quizzes'
+    template_name = 'quiz/taken_quiz_list.html'
+
+    def get_queryset(self):
+        queryset = self.request.user.student.taken_quizzes \
+            .select_related('quiz') \
+            .order_by('quiz__title')
+        return queryset
+
