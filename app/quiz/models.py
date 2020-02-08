@@ -69,6 +69,13 @@ class Student(models.Model):
 
         verbose_name = 'Student'
         verbose_name_plural = 'Students'
+    
+    def get_unanswered_questions(self, quiz):
+        answered_questions = self.quiz_answers \
+            .filter(answer__question__quiz=quiz) \
+            .values_list('answer__question__pk', flat=True)
+        questions = quiz.questions.exclude(pk__in=answered_questions).order_by('text')
+        return questions
 
     def __str__(self):
         return f'Student: {self.user.username}'
@@ -92,7 +99,7 @@ class TakenQuiz(models.Model):
 
 class StudentAnswer(models.Model):
     
-    user = models.ForeignKey(Student, related_name='user_answer', on_delete=models.CASCADE)
+    user = models.ForeignKey(Student, related_name='quiz_answers', on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
     class Meta:

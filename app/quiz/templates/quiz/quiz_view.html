@@ -4,6 +4,8 @@
 <li>
     <a href="{% url 'quiz:quiz_detail' quiz.pk %}">{{quiz.title}}</a>
     Кол-во вопросов: {{ quiz.questions_count }}
+   <a href="{% url 'quiz:take_quiz' quiz.pk %}">Пройти викторину</a>
+
 </li>
 {% endfor %}
 {% else %}

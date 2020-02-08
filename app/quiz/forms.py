@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from quiz.models import Question, Answer
-
+from quiz.models import Question, Answer, StudentAnswer
+from django.forms.utils import ValidationError
 
 class QuestionForm(forms.ModelForm):
 
@@ -34,3 +34,19 @@ AnswerFormSet = inlineformset_factory(
         max_num=10,
         validate_max=True
     )
+
+class TakeQuizForm(forms.ModelForm):
+    answer = forms.ModelChoiceField(
+        queryset=Answer.objects.none(),
+        widget=forms.RadioSelect(),
+        required=True,
+        empty_label=None)
+
+    class Meta:
+        model = StudentAnswer
+        fields = ('answer', )
+
+    def __init__(self, *args, **kwargs):
+        question = kwargs.pop('question')
+        super().__init__(*args, **kwargs)
+        self.fields['answer'].queryset = question.answers.order_by('text')
