@@ -138,59 +138,65 @@ class TakenQuizListView(ListView):
         return queryset
 
 
+class TakeQuiz(CreateView):
 
-class TakeQuizView(CreateView):
-    
-    form_class = TakeQuizForm
     template_name = 'quiz/take_quiz_form.html'
-
+    form_class = TakeQuizForm
 
     quiz = object = None
-    total_questions = object = None
-    unanswered_questions = object = None
-    total_unanswered_questions = object = None
-    progress = object = None
-    question = object = None
 
     def dispatch(self, request, *args, **kwargs):
         self.quiz = get_object_or_404(Quiz, pk=kwargs['pk'])
-        self.total_questions = self.quiz.questions.count()
-        self.unanswered_questions = request.user.student.get_unanswered_questions(self.quiz)
-        self.total_unanswered_questions = self.unanswered_questions.count()
-        self.progress = 100 - round(((self.total_unanswered_questions - 1) / self.total_questions) * 100)
-        self.question = self.unanswered_questions.first()
-        return super(TakeQuizView, self).dispatch(request, *args, **kwargs)
+        return super(TakeQuiz, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(TakeQuizView, self).get_context_data(**kwargs)
-        context['form'] = self.form_class(question=self.question)
-        context['question'] = self.question
+        context = super(TakeQuiz, self).get_context_data(**kwargs)
         context['quiz'] = self.quiz
-        context['progress'] = self.progress
+        context['question'] = self.get_question()
+        context['progress'] = self.get_progress()
+
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get_form_kwargs(self):
+        kwargs = {
+            'question': self.get_question(),
+        }
+        if self.request.method == 'POST':
+            kwargs.update({
+                'data': self.request.POST,
+                'question': self.get_question(),
+        })
+        return kwargs
 
-        if self.request.user.student.quizzes.filter(pk=kwargs['pk']).exists():
-            return render(request, 'quiz/taken_quiz_list.html')
+    def form_valid(self, form, **kwargs):
+        student = self.request.user.student
+        student_answer = form.save(commit=False)
+        student_answer.user = student
+        student_answer.save()
+        if student.get_unanswered_questions(self.quiz).exists():
+            return redirect('quiz:take_quiz', pk=self.quiz.pk)
+        else:
+            correct_answers = student.quiz_answers.filter(answer__question__quiz=self.quiz, answer__is_correct=True).count()
+            score = round((correct_answers / self.get_total_questions()) * 100.0, 2)
+            TakenQuiz.objects.create(student=student, quiz=self.quiz, score=score)
+            if score < 50.0:
+                messages.warning(self.request, 'Better luck next time! Your score for the quiz %s was %s.' % (self.quiz.title, score))
+            else:
+                messages.success(self.request, 'Congratulations! You completed the quiz %s with success! You scored %s points.' % (self.quiz.title, score))
+            return redirect('quiz:quizzes_list')
 
-    def post(self, request, *args, **kwargs):
-        student = request.user.student
-        form = self.form_class(question=self.question, data=request.POST)
-        if form.is_valid():
-            with transaction.atomic():
-                student_answer = form.save(commit=False)
-                student_answer.student = student
-                student_answer.save()
-                if student.get_unanswered_questions(self.quiz).exists():
-                    return redirect('quiz:take_quiz', kwargs['pk'])
-                else:
-                    correct_answers = student.quiz_answers.filter(answer__question__quiz=self.quiz, answer__is_correct=True).count()
-                    score = round((correct_answers / self.total_questions) * 100.0, 2)
-                    TakenQuiz.objects.create(student=student, quiz=self.quiz, score=score)
-                    if score < 50.0:
-                        messages.warning(request, 'Better luck next time! Your score for the quiz %s was %s.' % (self.quiz.title, score))
-                    else:
-                        messages.success(request, 'Congratulations! You completed the quiz %s with success! You scored %s points.' % (self.quiz.title, score))
-                    return redirect('quiz:quzzes_list')
+    def get_total_questions(self):
+        return self.quiz.questions.count()
 
+    def get_progress(self):
+        total_questions = self.get_total_questions()
+        total_unanswered_questions = self.unanswered_questions().count()
+        progress = 100 - round(((total_unanswered_questions - 1) / total_questions) * 100)
+        return progress
+
+    def unanswered_questions(self):
+        return self.request.user.student.get_unanswered_questions(self.quiz)
+
+    def get_question(self):
+        question = self.unanswered_questions().first()
+        return question

@@ -9,7 +9,7 @@ from quiz.views import (
     AddQuestionsView,
     AddAnswersView,
     TakenQuizListView,
-    TakeQuizView
+    TakeQuiz
 )
 
 
@@ -26,5 +26,5 @@ urlpatterns = [
     path('list/', QuizListView.as_view(), name='quizzes_list'),
     path('quiz/<int:pk>', QuizDetailView.as_view(), name='quiz_detail'),
     path('taken_quiz', TakenQuizListView.as_view(), name='taken_quiz_list'),
-    path('student/quiz/<int:pk>', TakeQuizView.as_view(), name='take_quiz')
+    path('student/quiz/<int:pk>', TakeQuiz.as_view(), name='take_quiz')
 ]
