@@ -180,9 +180,11 @@ class TakeQuiz(CreateView):
             score = round((correct_answers / self.get_total_questions()) * 100.0, 2)
             TakenQuiz.objects.create(student=student, quiz=self.quiz, score=score)
             if score < 50.0:
-                messages.warning(self.request, 'Better luck next time! Your score for the quiz %s was %s.' % (self.quiz.title, score))
+                messages.warning(self.request, 'Надеемся в дальнейшем вам повезёт больше! За викторину "{quiz}" вы заработали {score} баллов.' \
+                    .format(quiz=self.quiz.title, score=score))
             else:
-                messages.success(self.request, 'Congratulations! You completed the quiz %s with success! You scored %s points.' % (self.quiz.title, score))
+                messages.success(self.request, 'Поздравляем! Вы успешно закончили викторину "{quiz}"! Вы набрали {score} баллов!' \
+                    .format(quiz=self.quiz.title, score=score))
             return redirect('quiz:quizzes_list')
 
     def get_total_questions(self):
