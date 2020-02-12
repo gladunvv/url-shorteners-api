@@ -122,6 +122,10 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_REDIRECT_URL = 'login'
+
+LOGIN_URL = 'login'
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

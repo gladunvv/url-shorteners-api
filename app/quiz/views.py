@@ -7,6 +7,33 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from quiz.models import Quiz, Question, Answer, StudentAnswer, TakenQuiz
 from quiz.forms import QuestionForm, AnswerFormSet, TakeQuizForm
 from django.db.models import Count
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class StudentRequiredMixin(LoginRequiredMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_student:
+            return redirect('quiz:student_permission_denied')
+        return super(StudentRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class TeacherRequiredMixin(LoginRequiredMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_teacher:
+            return redirect('quiz:teacher_permission_denied')
+        return super(TeacherRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class StudentPermissionDenied(TemplateView):
+
+    template_name = 'quiz/student_permission_denied.html'
+
+
+class TeacherPermissionDenied(TemplateView):
+
+    template_name = 'quiz/teacher_permission_denied.html'
 
 
 class IndexView(TemplateView):
@@ -14,7 +41,7 @@ class IndexView(TemplateView):
     template_name = 'quiz/index.html'
 
 
-class StudentClassView(TemplateView):
+class StudentClassView(StudentPermissionDenied,TemplateView):
 
     template_name = 'quiz/student_class.html'
 
@@ -85,7 +112,7 @@ class AddAnswersView(CreateView):
         return redirect('quiz:quiz_detail', pk=self.quiz.id)
 
 
-class TeacherCabinetView(ListView):
+class TeacherCabinetView(TeacherRequiredMixin, ListView):
 
     model = Quiz
     ordering = ('name', )

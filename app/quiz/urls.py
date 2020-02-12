@@ -9,7 +9,9 @@ from quiz.views import (
     AddQuestionsView,
     AddAnswersView,
     TakenQuizListView,
-    TakeQuiz
+    TakeQuiz,
+    StudentPermissionDenied,
+    TeacherPermissionDenied
 )
 
 
@@ -26,5 +28,7 @@ urlpatterns = [
     path('list/', QuizListView.as_view(), name='quizzes_list'),
     path('quiz/<int:pk>', QuizDetailView.as_view(), name='quiz_detail'),
     path('taken_quiz', TakenQuizListView.as_view(), name='taken_quiz_list'),
-    path('student/quiz/<int:pk>', TakeQuiz.as_view(), name='take_quiz')
+    path('student/quiz/<int:pk>', TakeQuiz.as_view(), name='take_quiz'),
+    path('teacher/permission-denied', TeacherPermissionDenied.as_view(), name='teacher_permission_denied'),
+    path('student/permission-denied', StudentPermissionDenied.as_view(), name='student_permission_denied'),
 ]
