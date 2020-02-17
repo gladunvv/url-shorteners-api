@@ -46,7 +46,7 @@ class StudentClassView(StudentPermissionDenied,TemplateView):
     template_name = 'quiz/student_class.html'
 
 
-class CreateQuizView(CreateView):
+class CreateQuizView(TeacherRequiredMixin, CreateView):
 
     model = Quiz
     fields = ['title', 'description']
@@ -59,7 +59,7 @@ class CreateQuizView(CreateView):
         return redirect('quiz:add_question', pk=quiz.id)
 
 
-class AddQuestionsView(CreateView):
+class AddQuestionsView(TeacherRequiredMixin, CreateView):
 
     form_class = QuestionForm
     template_name = 'quiz/add_question.html'
@@ -77,7 +77,7 @@ class AddQuestionsView(CreateView):
         return redirect('quiz:add_answers', quiz_pk=self.quiz.id, question_pk=question.id)
 
 
-class AddAnswersView(CreateView):
+class AddAnswersView(TeacherRequiredMixin, CreateView):
 
     form_class = QuestionForm
     template_name = 'quiz/add_answers.html'
@@ -124,7 +124,7 @@ class TeacherCabinetView(TeacherRequiredMixin, ListView):
         return queryset
 
 
-class QuizDetailView(DetailView):
+class QuizDetailView(TeacherRequiredMixin, DetailView):
 
     model = Quiz
     template_name = 'quiz/quiz_detail.html'
@@ -135,7 +135,7 @@ class QuizDetailView(DetailView):
         return context
 
 
-class QuizListView(ListView):
+class QuizListView(StudentRequiredMixin, ListView):
 
     model = Quiz
     ordering = ('name', )
@@ -152,7 +152,7 @@ class QuizListView(ListView):
         return queryset
 
 
-class TakenQuizListView(ListView):
+class TakenQuizListView(StudentRequiredMixin, ListView):
 
     model = TakenQuiz
     context_object_name = 'taken_quizzes'
@@ -165,7 +165,7 @@ class TakenQuizListView(ListView):
         return queryset
 
 
-class TakeQuiz(CreateView):
+class TakeQuiz(StudentRequiredMixin, CreateView):
 
     template_name = 'quiz/take_quiz_form.html'
     form_class = TakeQuizForm
